@@ -8,6 +8,7 @@ authors:
     affiliation: "Studio Strata, Tokyo, Japan"
     orcid: "https://orcid.org/0000-0001-5001-349X"
 version: 0.1.0
+date-released: 2026-10-22
 license: MIT
 repository-code: "https://github.com/studio-strata/mechaudit"
 url: "https://studio-strata.github.io/mechaudit/"

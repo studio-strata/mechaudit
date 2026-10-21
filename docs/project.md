@@ -38,7 +38,9 @@ contributions follow
 
 ## Citation and reproducibility
 
-Use the repository's `CITATION.cff` metadata when citing the software. A computational result
+Use the repository's `CITATION.cff` metadata when citing the software. Releases are archived on
+Zenodo under the DOI [10.5281/zenodo.23540591](https://doi.org/10.5281/zenodo.23540591), which
+resolves to the latest version and links a DOI for each release. A computational result
 should additionally report:
 
 - the MechAudit and HiGHS versions;

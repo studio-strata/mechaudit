@@ -1,5 +1,7 @@
 # MechAudit
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23540591.svg)](https://doi.org/10.5281/zenodo.23540591)
+
 MechAudit is a Python research workbench for finite direct mechanisms. It audits supplied
 mechanisms, designs randomized mechanisms as sparse linear programs, and distinguishes
 constraints that are active at one returned solution from constraints that are active across
@@ -158,7 +160,10 @@ concerns follow
 ## Citation
 
 If MechAudit contributes to research, cite the software using
-[CITATION.cff](https://github.com/studio-strata/mechaudit/blob/main/CITATION.cff) and record the exact
+[CITATION.cff](https://github.com/studio-strata/mechaudit/blob/main/CITATION.cff). Every release is
+archived on Zenodo under the DOI
+[10.5281/zenodo.23540591](https://doi.org/10.5281/zenodo.23540591), which always resolves to the
+latest version; the Zenodo record also lists a DOI for each individual release. Record the exact
 library version, HiGHS version, fingerprints, effective objective delta, and tolerance policy
 used in the reported computation.
 

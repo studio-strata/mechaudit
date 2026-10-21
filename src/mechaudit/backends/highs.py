@@ -47,6 +47,15 @@ _REQUIRED_METHODS = (
     "version",
 )
 
+# Solution-quality statistics used to certify auxiliary optima. HiGHS added
+# the residual and objective-error fields in 1.11.
+_REQUIRED_INFO = (
+    "max_primal_infeasibility",
+    "max_dual_infeasibility",
+    "max_complementarity_violation",
+    "primal_dual_objective_error",
+)
+
 _CONTROLLED_OPTIONS = {
     "solver",
     "presolve",
@@ -160,6 +169,13 @@ class HighsBackend(LPBackend):
         if missing_methods:
             raise BackendFeatureError(
                 "installed highspy lacks required methods: {}".format(", ".join(missing_methods))
+            )
+        info = highs.getInfo()
+        missing_info = [name for name in _REQUIRED_INFO if not hasattr(info, name)]
+        if missing_info:
+            raise BackendFeatureError(
+                "installed highspy does not report {}; MechAudit requires highspy 1.11 or "
+                "newer".format(", ".join(missing_info))
             )
         if not hasattr(module.ObjSense, "kMaximize") or not hasattr(
             module.MatrixFormat, "kColwise"

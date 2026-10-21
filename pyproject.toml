@@ -37,7 +37,7 @@ classifiers = [
   "Topic :: Scientific/Engineering",
 ]
 dependencies = [
-  "highspy>=1.8,<2",
+  "highspy>=1.11,<2",
   "numpy>=1.26,<3",
   "pandas>=2.1,<4",
   "scipy>=1.11,<2",

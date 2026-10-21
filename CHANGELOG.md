@@ -37,6 +37,8 @@ All notable changes to MechAudit are documented here. The format follows
 - `ExpectedResidualSurplus` is now unweighted; use `WeightedAgentUtilities` for weighted agent
   utilities.
 - `FiniteEnvironment` accepts valuations only through `values=`.
+- The minimum supported `highspy` is now 1.11, the first release that reports the solution-quality
+  statistics used to certify optimal-face solves; older versions are rejected with a clear error.
 - `DesignProblem.compile()` no longer takes a `probability_tolerance` argument, which had no
   effect on the compiled model.
 - Model compilation is several times faster, and fixed-mechanism audits about four times faster,

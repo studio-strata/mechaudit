@@ -1,0 +1,38 @@
+name: Feature proposal
+description: Propose a new economic primitive, workflow, diagnostic, or documentation improvement.
+title: "[Proposal]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Research or user problem
+      description: What cannot be expressed or diagnosed clearly with the current API?
+    validations:
+      required: true
+  - type: textarea
+    id: semantics
+    attributes:
+      label: Proposed semantics
+      description: Define information, timing, signs, units, equations, and expected failure behavior.
+    validations:
+      required: true
+  - type: textarea
+    id: surface
+    attributes:
+      label: Proposed public surface
+      description: Sketch constructors, result fields, or workflow changes without requiring a full implementation.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Analytical examples and references
+      description: Give a small expected-result example and relevant literature or software references.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and pull requests.
+          required: true
+        - label: I have separated required semantics from optional implementation ideas.
+          required: true

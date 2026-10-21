@@ -1,0 +1,46 @@
+# Python environments and caches
+/.venv/
+/.artifact-venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+
+# Test and coverage artifacts
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.pytest_cache/
+.hypothesis/
+/.test-tmp*/
+.tox/
+.nox/
+
+# Notebook artifacts
+.ipynb_checkpoints/
+.jupyter_cache/
+
+# Build and documentation output
+/dist/
+/build/
+/site/
+/tmp/
+
+# Manuscript sources and generated research artifacts
+/paper/
+/output/
+
+# Local editor and operating-system files
+.idea/
+/.vscode/
+*.log
+.DS_Store
+Thumbs.db
+
+# Local credentials and directory-specific environments
+/.env
+/.env.*
+!/.env.example
+/.direnv/

@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MechAudit report envelope version 1",
+  "description": "Stable envelope and top-level payload contract for MechAudit JSON reports with schema_version 1.0. Additional payload fields are allowed for backward-compatible extensions.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "library_version",
+    "report_kind"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "library_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "report_kind": {
+      "enum": [
+        "mechanism_audit",
+        "design_solution",
+        "candidate_assessment",
+        "optimal_face_report",
+        "scenario_comparison"
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "title": "Mechanism audit",
+      "properties": {
+        "report_kind": {
+          "const": "mechanism_audit"
+        },
+        "environment_fingerprint": {
+          "type": "string"
+        },
+        "mechanism_fingerprint": {
+          "type": "string"
+        },
+        "payment_sign_convention": {
+          "const": "positive_to_designer"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "epsilon_ic": {
+          "type": "number"
+        },
+        "feasibility_tolerance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "probability_tolerance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "numerical_health": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "environment_fingerprint",
+        "mechanism_fingerprint",
+        "payment_sign_convention",
+        "passed",
+        "epsilon_ic",
+        "feasibility_tolerance",
+        "probability_tolerance",
+        "requirements",
+        "checks",
+        "numerical_health"
+      ]
+    },
+    {
+      "title": "Design solution",
+      "properties": {
+        "report_kind": {
+          "const": "design_solution"
+        },
+        "model_fingerprint": {
+          "type": "string"
+        },
+        "mechanism_fingerprint": {
+          "type": "string"
+        },
+        "objective_name": {
+          "type": "string"
+        },
+        "objective_value": {
+          "type": "number"
+        },
+        "solver": {
+          "type": "object"
+        },
+        "tolerances": {
+          "type": "object"
+        },
+        "selected_activity": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "audit": {
+          "type": "object"
+        },
+        "numerical_health": {
+          "type": "object"
+        },
+        "mechanism": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "model_fingerprint",
+        "mechanism_fingerprint",
+        "objective_name",
+        "objective_value",
+        "solver",
+        "tolerances",
+        "selected_activity",
+        "audit",
+        "numerical_health",
+        "mechanism"
+      ]
+    },
+    {
+      "title": "Candidate assessment",
+      "properties": {
+        "report_kind": {
+          "const": "candidate_assessment"
+        },
+        "model_fingerprint": {
+          "type": "string"
+        },
+        "mechanism_fingerprint": {
+          "type": "string"
+        },
+        "is_feasible": {
+          "type": "boolean"
+        },
+        "objective_value": {
+          "type": "number"
+        },
+        "optimal_value": {
+          "type": "number"
+        },
+        "absolute_optimality_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "relative_optimality_gap": {
+          "type": "number",
+          "minimum": 0
+        },
+        "optimality_tolerance": {
+          "type": "number",
+          "minimum": 0
+        },
+        "is_optimal": {
+          "type": "boolean"
+        },
+        "active_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "universally_active_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "active_but_nonuniversal_constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "audit": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "model_fingerprint",
+        "mechanism_fingerprint",
+        "is_feasible",
+        "objective_value",
+        "optimal_value",
+        "absolute_optimality_gap",
+        "relative_optimality_gap",
+        "optimality_tolerance",
+        "is_optimal",
+        "active_constraints",
+        "universally_active_constraints",
+        "active_but_nonuniversal_constraints",
+        "audit"
+      ]
+    },
+    {
+      "title": "Optimal-face report",
+      "properties": {
+        "report_kind": {
+          "const": "optimal_face_report"
+        },
+        "model_fingerprint": {
+          "type": "string"
+        },
+        "objective_name": {
+          "type": "string"
+        },
+        "optimal_value": {
+          "type": "number"
+        },
+        "requested_delta": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "effective_delta": {
+          "type": "number",
+          "minimum": 0
+        },
+        "delta": {
+          "type": "number",
+          "minimum": 0
+        },
+        "near_optimal_face": {
+          "type": "string"
+        },
+        "level": {
+          "type": "string"
+        },
+        "tolerances": {
+          "type": "object"
+        },
+        "classification_counts": {
+          "type": "object"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "solve_counts": {
+          "type": "object"
+        },
+        "failures": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "dual_ranges": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "analyzed_families": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "skipped_constraint_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidate": {
+          "type": "object"
+        },
+        "methodology": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "model_fingerprint",
+        "objective_name",
+        "optimal_value",
+        "requested_delta",
+        "effective_delta",
+        "delta",
+        "near_optimal_face",
+        "level",
+        "tolerances",
+        "classification_counts",
+        "constraints",
+        "solve_counts",
+        "failures",
+        "dual_ranges",
+        "analyzed_families",
+        "skipped_constraint_count",
+        "candidate",
+        "methodology"
+      ]
+    },
+    {
+      "title": "Scenario comparison",
+      "properties": {
+        "report_kind": {
+          "const": "scenario_comparison"
+        },
+        "scenarios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "status"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "scenarios"
+      ]
+    }
+  ]
+}

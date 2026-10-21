@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Private vulnerability report
+    url: https://github.com/studio-strata/mechaudit/security/advisories/new
+    about: Submit suspected security vulnerabilities through GitHub's private reporting form.
+  - name: Documentation
+    url: https://github.com/studio-strata/mechaudit/tree/main/docs
+    about: Read the version-controlled installation, workflow, methodology, and API guidance.

@@ -1,0 +1,146 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  test:
+    name: Python ${{ matrix.python }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: "3.10"
+          - os: ubuntu-latest
+            python: "3.11"
+          - os: ubuntu-latest
+            python: "3.12"
+          - os: ubuntu-latest
+            python: "3.13"
+          - os: ubuntu-latest
+            python: "3.14"
+          - os: windows-latest
+            python: "3.13"
+          - os: macos-latest
+            python: "3.13"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install test environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test,xarray]"
+      - name: Run tests
+        run: python -m pytest
+
+  minimum-core:
+    name: Minimum dependencies without xarray
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install declared minimum runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install \
+            "highspy==1.8.0" \
+            "numpy==1.26.0" \
+            "pandas==2.1.0" \
+            "scipy==1.11.0" \
+            "hypothesis==6.100.0" \
+            "jsonschema==4.23.0" \
+            "pytest==8.2.0" \
+            "pytest-cov==5.0.0" \
+            "tomli==2.0.1"
+          python -m pip install --no-deps -e .
+      - name: Confirm optional xarray is absent
+        run: >-
+          python -c "import importlib.util, mechaudit;
+          assert importlib.util.find_spec('xarray') is None;
+          print(mechaudit.__version__)"
+      - name: Run core tests
+        run: python -m pytest
+
+  quality:
+    name: Lint, type, coverage, and documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install development environment
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,xarray]"
+      - run: ruff format --check .
+      - run: ruff check .
+      - run: mypy -p mechaudit
+      - name: Run branch coverage with floor
+        run: >-
+          pytest --cov=mechaudit --cov-report=xml --cov-report=term-missing
+          --cov-fail-under=85
+      - run: mkdocs build --strict
+      - name: Run analytical smoke benchmark
+        run: python benchmarks/benchmark_smoke.py --repeat 1
+
+  package:
+    name: Build and install distributions
+    needs: [test, minimum-core, quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Build and validate metadata
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "build>=1.2" "twine>=5.1"
+          python -m build
+          python -m twine check dist/*
+      - name: Install the wheel in a clean environment
+        run: |
+          python -m venv .artifact-venv
+          .artifact-venv/bin/python -m pip install --upgrade pip
+          .artifact-venv/bin/python -m pip install dist/*.whl
+          .artifact-venv/bin/python -c "import mechaudit; print(mechaudit.__version__)"
+          .artifact-venv/bin/python examples/profitable_deviation.py
+      - name: Upload distributions
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: python-package-distributions
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14

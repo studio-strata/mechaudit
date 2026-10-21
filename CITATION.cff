@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use MechAudit in research, please cite the software and record the exact version and numerical tolerances."
+title: "MechAudit: finite mechanism design and optimal-constraint analysis"
+type: software
+authors:
+  - family-names: "Staffini"
+    given-names: "Alessio"
+    affiliation: "Studio Strata, Tokyo, Japan"
+    orcid: "https://orcid.org/0000-0001-5001-349X"
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/studio-strata/mechaudit"
+url: "https://studio-strata.github.io/mechaudit/"
+abstract: >-
+  MechAudit is a Python research workbench for auditing finite direct mechanisms,
+  designing randomized mechanisms with sparse linear programming, and studying
+  constraint activity across near-optimal faces.
+keywords:
+  - mechanism design
+  - incentive compatibility
+  - linear programming
+  - computational economics
+  - numerical diagnostics

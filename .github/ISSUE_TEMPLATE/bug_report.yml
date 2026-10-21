@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible correctness, numerical, packaging, or documentation problem.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not disclose vulnerabilities or sensitive research data here. Use the private
+        security reporting link instead.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Provide the smallest complete environment, mechanism, and command that reproduce the issue.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Numerical and semantic evidence
+      description: Include exception path/context, fingerprints, tolerances, solver options, warnings, and output where relevant.
+  - type: input
+    id: version
+    attributes:
+      label: MechAudit version
+      placeholder: 0.1.0 or commit identifier
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Python, operating system, highspy, NumPy, pandas, and SciPy versions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and pull requests.
+          required: true
+        - label: This report contains no vulnerability details or sensitive data.
+          required: true
